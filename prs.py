@@ -526,6 +526,7 @@ class Settings:
     checkpoint = "./models/sd-v1-4.ckpt"
     use_jpg = False
     hide_metadata = False
+    bucket = None
     
     def apply_settings_file(self, filename, settings_file):
         print(f'Applying settings file: {filename}')
@@ -579,6 +580,8 @@ class Settings:
             self.use_jpg = (settings_file["use_jpg"])
         if is_json_key_present(settings_file, 'hide_metadata'):
             self.hide_metadata = (settings_file["hide_metadata"])
+        if is_json_key_present(settings_file, 'bucket'):
+            self.bucket = (settings_file["bucket"])
 
 def esrgan_resize(input, id):
     input.save(f'_esrgan_orig{id}.png')
@@ -817,7 +820,7 @@ def main():
                     "hide_metadata": settings.hide_metadata,
                     "quality": quality,
                     "device_id": device_id,
-                    "bucket": False
+                    "bucket": settings.bucket
                 }
                 opt = SimpleNamespace(**opt)
                 # render the image(s)!
